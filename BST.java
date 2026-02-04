@@ -9,27 +9,43 @@ public class BST
     public static void problem(BST tree1, BST tree2)
     {
         Queue<Node> queue = new LinkedList<>();
+
+        // We will add tree two nodes since we want tree one to look like tree two
         queue.add(tree2.root);
 
+        
         while (!queue.isEmpty()) {
+
+
+            // Remove node from queue
             Node nodeToProcess = queue.poll();
+
+            // This is guaranteed to be found since both trees have the same nodes
             Node nodeToFind = tree1.find(nodeToProcess.key);
             while (true) {
-                Node p1 = nodeToFind.parent; // 30
-                Node p2 = nodeToProcess.parent; // 30
 
+                // Since we want the structure to be the same, one way to ensure this is if the nodes have the same parents.
+                Node p1 = nodeToFind.parent; 
+                Node p2 = nodeToProcess.parent; 
+
+                // If they have no parents, that means they are the root nodes. We break
                 if (p1 == null && p2 == null) {
                     break;
                 }
 
+                
+                // If they are not the root and the parents are the same, we know they are in the same place
                 if (p1 != null && p2 != null && p1.key == p2.key) {
                     break;
                 }
 
 
+                // We will rotate the parent node in tree one to the right if it is greater than the parent node in tree two. 
                 if (p1.key > nodeToFind.key) {
                     tree1.rotateR(p1);
                 }
+
+                // Other wise, we will left rotate the parent
                 else {
                     tree1.rotateL(p1);
                 }
@@ -37,6 +53,8 @@ public class BST
 
             }
 
+            
+            // Add right and left children of current node being processed in tree two
             if (nodeToProcess.left != null) {
                 queue.add(nodeToProcess.left);
             }
